@@ -6,11 +6,10 @@ const usersController = {};
 usersController.getAllUsers = (req, res) => {
   fs.readFile(pathFile, (error, data) => {
     if (error) {
-      res.status(500).json({ error: 'Error reading file' });
-    } else {
-      const jsonData = JSON.parse(data);
-      res.status(200).json(jsonData);
+      return res.status(500).json({ error: 'Error reading file' });
     }
+    const jsonData = JSON.parse(data);
+    return res.status(200).json(jsonData);
   });
 };
 
@@ -18,7 +17,7 @@ usersController.getUserById = (req, res) => {
   const userId = req.params.id;
   fs.readFile(pathFile, (error, data) => {
     if (error) {
-      res.status(500).json({ error: 'Error reading file' });
+      return res.status(500).json({ error: 'Error reading file' });
     } else {
       const jsonData = JSON.parse(data);
       const userFound = jsonData.find((user) => user.userId === userId);
