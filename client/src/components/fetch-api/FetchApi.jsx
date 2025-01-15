@@ -3,25 +3,49 @@ import { useEffect, useState } from 'react';
 const FetchApi = () => {
 	const [users, setUsers] = useState([]);
 
-	console.log('render');
-
 	useEffect(() => {
 		fetchDataNew(setUsers);
-		console.log('use effect');
 	}, []);
 
 	return (
 		<>
 			<h1>FETCH</h1>
+			<form onSubmit={(setUsers, id) => fetchUserById(setUsers, id)}>
+				<input type='text' placeholder='write id' />
+				<button type='submit'>Send</button>
+			</form>
 			{users.length === 0 && <h2>No hay usuarios</h2>}
 			{users.map(user => (
-				<h2 key={user.id}>{user.name}</h2>
+				<h2 key={user.userId}>
+					Nombre {user.name} ID {user.userId}
+				</h2>
 			))}
 		</>
 	);
 };
 
 export default FetchApi;
+
+const fetchDataNew = async setUsers => {
+	try {
+		const response = await fetch('http://localhost:3000/api/users');
+		const users = await response.json();
+		setUsers(users);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const fetchUserById = async (setUsers, id) => {
+	try {
+		const response = await fetch(`http://localhost:3000/api/users/${id}`);
+		const users = await response.json();
+		console.log(users);
+		setUsers(users);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 //RESOLVE -> si todo va bien
 // REJECT -> si algo va mal
@@ -54,12 +78,12 @@ export default FetchApi;
 // };
 //fetchDataThen();
 
-const fetchDataNew = async setUsers => {
-	try {
-		const response = await fetch('https://jsonplaceholder.typicode.com/users');
-		const users = await response.json();
-		setUsers(users);
-	} catch (error) {
-		console.log(error);
-	}
-};
+// const fetchDataNew = async setUsers => {
+// 	try {
+// 		const response = await fetch('https://jsonplaceholder.typicode.com/users');
+// 		const users = await response.json();
+// 		setUsers(users);
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// };
