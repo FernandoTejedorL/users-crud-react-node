@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 
 const FetchApi = () => {
 	const [users, setUsers] = useState([]);
+	const [id, setId] = useState('');
+	console.log(id);
+	console.log('render');
 
 	useEffect(() => {
 		fetchDataNew(setUsers);
@@ -10,8 +13,13 @@ const FetchApi = () => {
 	return (
 		<>
 			<h1>FETCH</h1>
-			<form onSubmit={(setUsers, id) => fetchUserById(setUsers, id)}>
-				<input type='text' placeholder='write id' />
+			<form onSubmit={event => idSubmit(event, setUsers, id)}>
+				<input
+					type='text'
+					value={id}
+					onChange={event => setId(event.target.value)}
+					placeholder='write id'
+				/>
 				<button type='submit'>Send</button>
 			</form>
 			{users.length === 0 && <h2>No hay usuarios</h2>}
@@ -41,7 +49,17 @@ const fetchUserById = async (setUsers, id) => {
 		const response = await fetch(`http://localhost:3000/api/users/${id}`);
 		const users = await response.json();
 		console.log(users);
-		setUsers(users);
+		console.log([users]);
+		setUsers([users]);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const idSubmit = async (event, setUsers, id) => {
+	event.preventDefault();
+	try {
+		await fetchUserById(setUsers, id);
 	} catch (error) {
 		console.log(error);
 	}
