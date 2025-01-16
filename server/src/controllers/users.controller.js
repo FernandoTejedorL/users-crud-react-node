@@ -22,7 +22,7 @@ usersController.getUserById = (req, res) => {
       const jsonData = JSON.parse(data);
       const userFound = jsonData.find((user) => user.userId === userId);
       if (userFound) {
-        res.status(200).json(userFound);
+        res.status(200).json([userFound]);
       } else {
         res.status(404).json({ error: 'User not found' });
       }

@@ -22,9 +22,7 @@ const fetchUserById = async (setUsers, id) => {
 	try {
 		const response = await fetch(`http://localhost:3000/api/users/${id}`);
 		const users = await response.json();
-		console.log(users);
-		console.log([users]);
-		setUsers([users]);
+		setUsers(users);
 	} catch (error) {
 		console.log(error);
 	}
